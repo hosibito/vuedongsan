@@ -4,21 +4,21 @@
   </div>
 
   <!-- 모달창 -->
-  <div v-for = "(product) in products" :key="product.name">
-    <div v-if="product.isDetail" class="black-bg" @click="product.isDetail=false">
-      <div class="white-bg">
-        <h4>상세페이지</h4>
-        <p>{{product.detail}}</p>
-        <button @click="product.isDetail=false">닫기</button>
-      </div>
+
+  <div v-if="roomDetail.isModal" class="black-bg" @click="closeRoomDetail()">
+    <div class="white-bg">
+      <h4>상세페이지</h4>
+      <p>{{ products[roomDetail.choiceRoom].detail }}</p>
+      <button @click="closeRoomDetail()">닫기</button>
     </div>
   </div>
+
 
   <div v-for="(product,index) in products" :key="product.name">
 
     <img :src="require(`@/assets/${product.roomImg}`)" class="room-img"/>
   
-    <h4 @click="product.isDetail=true">{{product.name}}</h4>
+    <h4 @click="showRoomDetail(index)">{{product.name}}</h4>
     <p>{{product.price}}만원</p>
     <button @click="addDeclaration(index)">허위매물신고</button>
     <span>신고수 : {{product.declaration}}</span>
@@ -35,10 +35,14 @@ export default {
       menuList : ['Home', 'Products', 'About'],
       price1 :60,
       styleH4 : 'color: red',
+      roomDetail : {
+        isModal :false,
+        choiceRoom : null,
+      },
       products : [
-        { name : '역삼동 원룸', price : 80, declaration: 0, roomImg:"room0.jpg", isDetail : false, detail : "상세페이지 내용1"},
-        { name : '천호동 원룸', price : 50, declaration: 0, roomImg:"room1.jpg", isDetail : false, detail : "상세페이지 내용2"},
-        { name : '마포구 원룸', price : 70, declaration: 0, roomImg:"room2.jpg", isDetail : false, detail : "상세페이지 내용3"},
+        { name : '역삼동 원룸', price : 80, declaration: 0, roomImg:"room0.jpg",  detail : "상세페이지 내용1"},
+        { name : '천호동 원룸', price : 50, declaration: 0, roomImg:"room1.jpg",  detail : "상세페이지 내용2"},
+        { name : '마포구 원룸', price : 70, declaration: 0, roomImg:"room2.jpg",  detail : "상세페이지 내용3"},
       ]    
     }
   },
@@ -46,6 +50,13 @@ export default {
     addDeclaration(index){
       this.products[index].declaration += 1;
     }, 
+    showRoomDetail(index){
+      this.roomDetail.choiceRoom = index;
+      this.roomDetail.isModal = true;
+    },
+    closeRoomDetail(){
+      this.roomDetail.isModal = false;
+    }
   }
 }
 </script>
